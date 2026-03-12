@@ -183,6 +183,15 @@
     opacity: 0.9;
   }
 
+  .hero-desc {
+    font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+    color: var(--text-secondary);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+    opacity: 0.85;
+  }
+
   .hero-build-line {
     font-size: 1.05rem;
     color: var(--success);
@@ -1024,7 +1033,7 @@
       color: #1a1a1a;
     }
 
-    .hero-subtitle, .hero-tagline { color: #444; }
+    .hero-subtitle, .hero-tagline, .hero-desc { color: #444; }
     .hero-build-line {
       color: #1a7a3a;
       border-color: #1a7a3a;
@@ -1118,6 +1127,7 @@
       <h1 class="hero-title">ElektraOS</h1>
       <p class="hero-subtitle">Operator Console</p>
       <p class="hero-tagline">AI-powered business operating system</p>
+      <p class="hero-desc">55,000+ lines of code &middot; 400+ endpoints &middot; 38 agents &middot; 9 domains</p>
       <div class="hero-build-line">Built solo. No formal CS background. 10 weeks.</div>
     </div>
     <div class="hero-scroll-hint">Scroll</div>
