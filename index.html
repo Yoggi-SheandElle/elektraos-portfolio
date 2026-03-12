@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElektraOS - AI-Powered Business Operating System</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2333;
+    --bg-card: #21262d;
+    --accent: #8b5cf6;
+    --accent-dim: rgba(139, 92, 246, 0.15);
+    --accent-glow: rgba(139, 92, 246, 0.4);
+    --success: #2bff88;
+    --success-dim: rgba(43, 255, 136, 0.12);
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #30363d;
+    --border-accent: rgba(139, 92, 246, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px var(--accent-dim); }
+    50% { box-shadow: 0 0 40px var(--accent-glow); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-in {
+    animation: fadeInUp 0.6s ease-out both;
+  }
+
+  .animate-delay-1 { animation-delay: 0.1s; }
+  .animate-delay-2 { animation-delay: 0.2s; }
+  .animate-delay-3 { animation-delay: 0.3s; }
+  .animate-delay-4 { animation-delay: 0.4s; }
+  .animate-delay-5 { animation-delay: 0.5s; }
+  .animate-delay-6 { animation-delay: 0.6s; }
+
+  /* ===== LAYOUT ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 80px 0;
+    position: relative;
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent);
+    margin: 0 auto;
+    max-width: 600px;
+    opacity: 0.5;
+  }
+
+  /* ===== HEADER / HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(43, 255, 136, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Grid pattern overlay */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--border-accent);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    background: var(--accent-dim);
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #e6edf3 0%, #8b5cf6 50%, #2bff88 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--text-secondary);
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--text-primary);
+    font-weight: 300;
+    margin-bottom: 16px;
+    opacity: 0.9;
+  }
+
+  .hero-build-line {
+    font-size: 1.05rem;
+    color: var(--success);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 10px 24px;
+    border: 1px solid rgba(43, 255, 136, 0.2);
+    border-radius: 8px;
+    display: inline-block;
+    background: rgba(43, 255, 136, 0.06);
+    margin-top: 8px;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .hero-scroll-hint::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--text-muted), transparent);
+    margin: 8px auto 0;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-label {
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  .section-header {
+    margin-bottom: 56px;
+  }
+
+  .section-header.center {
+    text-align: center;
+  }
+
+  .section-header.center .section-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ===== ARCHITECTURE SECTION ===== */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .arch-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .arch-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .arch-card:hover::before {
+    opacity: 1;
+  }
+
+  .arch-number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .arch-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  /* ===== DOMAINS GRID ===== */
+  .domains-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .domain-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .domain-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .domain-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .domain-card:hover::after {
+    opacity: 1;
+  }
+
+  .domain-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+
+  .domain-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .domain-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ===== AGENT SYSTEM ===== */
+  .agent-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .agent-stats-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .agent-stat {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .agent-stat-num {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .agent-stat-label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .pipeline-list {
+    list-style: none;
+  }
+
+  .pipeline-item {
+    padding: 12px 16px;
+    border-left: 2px solid var(--border);
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .pipeline-item:hover {
+    border-left-color: var(--accent);
+    color: var(--text-primary);
+    background: var(--accent-dim);
+  }
+
+  .pipeline-name {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .agent-visual {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .agent-visual-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+
+  .agent-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .agent-flow-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .agent-flow-node {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .agent-flow-node.scheduler {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.3);
+    color: var(--accent);
+  }
+
+  .agent-flow-node.backend {
+    background: rgba(43, 255, 136, 0.06);
+    border-color: rgba(43, 255, 136, 0.2);
+    color: var(--success);
+  }
+
+  .agent-flow-node.pipeline {
+    background: rgba(56, 139, 253, 0.08);
+    border-color: rgba(56, 139, 253, 0.25);
+    color: #58a6ff;
+  }
+
+  .agent-flow-arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    text-align: center;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  /* ===== GOVERNANCE ===== */
+  .gov-tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .gov-tier {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gov-tier::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .gov-tier.operational::before {
+    background: linear-gradient(90deg, #58a6ff, #8b5cf6);
+  }
+
+  .gov-tier.strategic::before {
+    background: linear-gradient(90deg, #8b5cf6, #d946ef);
+  }
+
+  .gov-tier.compliance::before {
+    background: linear-gradient(90deg, #d946ef, #2bff88);
+  }
+
+  .gov-tier-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .gov-tier-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .gov-tier-items {
+    list-style: none;
+  }
+
+  .gov-tier-items li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gov-tier-items li:last-child {
+    border-bottom: none;
+  }
+
+  .gov-tier-items li::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .gov-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .gov-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.2s ease;
+  }
+
+  .gov-feature:hover {
+    border-color: var(--border-accent);
+  }
+
+  .gov-feature-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .gov-feature-text h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .gov-feature-text p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ===== CONTENT FACTORY ===== */
+  .cf-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .cf-kanban {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .cf-kanban-col {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .cf-kanban-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .cf-kanban-count {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .cf-kanban-col:nth-child(1) .cf-kanban-count { color: var(--text-secondary); }
+  .cf-kanban-col:nth-child(2) .cf-kanban-count { color: #58a6ff; }
+  .cf-kanban-col:nth-child(3) .cf-kanban-count { color: #d29922; }
+  .cf-kanban-col:nth-child(4) .cf-kanban-count { color: var(--success); }
+
+  .cf-ops {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .cf-op {
+    padding: 14px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .cf-op:hover {
+    border-color: var(--border-accent);
+    color: var(--text-primary);
+  }
+
+  .cf-op-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .cf-platforms {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .cf-platforms-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .cf-platform-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cf-tag {
+    padding: 6px 14px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+  }
+
+  .cf-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ===== KEY STATS BANNER ===== */
+  .stats-section {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 80% at 20% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 80% 50%, rgba(43, 255, 136, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    position: relative;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 16px 0;
+  }
+
+  .stat-value {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-value.purple { color: var(--accent); }
+  .stat-value.green { color: var(--success); }
+  .stat-value.blue { color: #58a6ff; }
+  .stat-value.pink { color: #d946ef; }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  /* ===== SCREENSHOT PLACEHOLDERS ===== */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .screenshot-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+
+  .screenshot-placeholder {
+    aspect-ratio: 16 / 10;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .screenshot-placeholder:hover {
+    border-color: var(--accent);
+  }
+
+  .screenshot-placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(139, 92, 246, 0.03) 25%, transparent 25%),
+      linear-gradient(-135deg, rgba(139, 92, 246, 0.03) 25%, transparent 25%),
+      linear-gradient(45deg, rgba(139, 92, 246, 0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(139, 92, 246, 0.03) 25%, transparent 25%);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  .screenshot-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  .screenshot-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .screenshot-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-top: 6px;
+  }
+
+  /* ===== TECH STACK ===== */
+  .tech-stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  .tech-pill {
+    padding: 10px 22px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: all 0.25s ease;
+  }
+
+  .tech-pill:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    box-shadow: 0 0 20px var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  /* ===== COST CALLOUT ===== */
+  .cost-callout {
+    text-align: center;
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cost-callout::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--success), var(--accent));
+  }
+
+  .cost-amount {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--success);
+    letter-spacing: -0.02em;
+  }
+
+  .cost-label {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .cost-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    padding: 48px 0;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  .footer-text strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .domains-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .agent-layout,
+    .cf-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .gov-tiers {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 60px 0; }
+
+    .domains-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .arch-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .screenshots-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cf-kanban {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cf-ops {
+      grid-template-columns: 1fr;
+    }
+
+    .agent-stats-block {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .gov-features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 0 16px; }
+
+    .arch-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .agent-stats-block {
+      grid-template-columns: 1fr;
+    }
+
+    .cf-kanban {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ===== PRINT STYLES ===== */
+  @media print {
+    body {
+      background: #fff;
+      color: #1a1a1a;
+    }
+
+    .hero { min-height: auto; padding: 40px 0; }
+    .hero::before, .hero::after { display: none; }
+    .hero-scroll-hint { display: none; }
+
+    .hero-title {
+      background: none;
+      -webkit-text-fill-color: #1a1a1a;
+      color: #1a1a1a;
+    }
+
+    .hero-subtitle, .hero-tagline { color: #444; }
+    .hero-build-line {
+      color: #1a7a3a;
+      border-color: #1a7a3a;
+      background: transparent;
+    }
+
+    section { padding: 30px 0; }
+    .section-divider { background: #ccc; }
+
+    .arch-card, .domain-card, .agent-stat, .gov-tier,
+    .gov-feature, .cf-kanban-col, .cf-op, .cf-platforms,
+    .agent-visual, .cost-callout, .screenshot-placeholder {
+      background: #f8f8f8;
+      border-color: #ddd;
+      box-shadow: none;
+    }
+
+    .arch-card:hover, .domain-card:hover, .cf-op:hover,
+    .gov-feature:hover, .screenshot-placeholder:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .arch-number, .agent-stat-num, .stat-value,
+    .section-label, .cost-amount {
+      color: #333 !important;
+      -webkit-text-fill-color: #333 !important;
+    }
+
+    .domain-title, .gov-tier-title, .pipeline-name,
+    .section-title {
+      color: #1a1a1a;
+    }
+
+    .domain-desc, .gov-tier-items li, .section-desc,
+    .arch-label, .agent-stat-label, .stat-label,
+    .pipeline-item, .cf-tag, .cost-label, .footer-text {
+      color: #555;
+    }
+
+    .hero-badge {
+      color: #555;
+      border-color: #ccc;
+      background: #f0f0f0;
+    }
+
+    .tech-pill {
+      background: #f0f0f0;
+      border-color: #ccc;
+      color: #333;
+    }
+
+    .stats-section {
+      background: #f5f5f5;
+      border-color: #ddd;
+    }
+    .stats-section::before { display: none; }
+
+    .domain-card::after { display: none; }
+    .gov-tier::before { background: #888 !important; }
+
+    .screenshot-placeholder::before { display: none; }
+    .screenshot-icon, .screenshot-label, .screenshot-hint { color: #888; }
+
+    .agent-flow-node {
+      background: #f0f0f0 !important;
+      border-color: #ccc !important;
+      color: #333 !important;
+    }
+
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .footer { border-color: #ddd; }
+    .footer-text, .footer-text strong { color: #555; }
+
+    @page {
+      margin: 1cm;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Portfolio</div>
+      <h1 class="hero-title">ElektraOS</h1>
+      <p class="hero-subtitle">Operator Console</p>
+      <p class="hero-tagline">AI-powered business operating system</p>
+      <div class="hero-build-line">Built solo. No formal CS background. 10 weeks.</div>
+    </div>
+    <div class="hero-scroll-hint">Scroll</div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== ARCHITECTURE ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header center animate-in">
+        <div class="section-label">System Architecture</div>
+        <h2 class="section-title">Full-Stack AI Operating System</h2>
+        <p class="section-desc">A complete business automation platform built from the ground up as a solo project by a marketing and e-commerce professional with no formal CS background.</p>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-card animate-in animate-delay-1">
+          <div class="arch-number">55K+</div>
+          <div class="arch-label">Lines of Python/FastAPI</div>
+        </div>
+        <div class="arch-card animate-in animate-delay-2">
+          <div class="arch-number">400+</div>
+          <div class="arch-label">REST API Endpoints</div>
+        </div>
+        <div class="arch-card animate-in animate-delay-3">
+          <div class="arch-number">28</div>
+          <div class="arch-label">Database Tables</div>
+        </div>
+        <div class="arch-card animate-in animate-delay-4">
+          <div class="arch-number">12</div>
+          <div class="arch-label">Operator Console Tabs</div>
+        </div>
+        <div class="arch-card animate-in animate-delay-5">
+          <div class="arch-number">6</div>
+          <div class="arch-label">LLM Provider Fallback Chain</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== SCREENSHOTS: Dashboard ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header center animate-in">
+        <div class="section-label">Interface</div>
+        <h2 class="section-title">Operator Console</h2>
+        <p class="section-desc">A single-page application with 12 navigation tabs providing real-time oversight across every business function.</p>
+      </div>
+
+      <div class="screenshots-grid">
+        <div class="screenshot-placeholder animate-in animate-delay-1">
+          <img src="screenshots/dashboard.png" alt="System Intelligence Dashboard - Model Council, 257 tasks, 610 opportunities" loading="lazy">
+          <div class="screenshot-label">System Intelligence</div>
+        </div>
+        <div class="screenshot-placeholder animate-in animate-delay-2">
+          <img src="screenshots/content_factory.png" alt="Content Factory - Multi-brand Kanban board with 226 entries" loading="lazy">
+          <div class="screenshot-label">Content Factory</div>
+        </div>
+        <div class="screenshot-placeholder animate-in animate-delay-3">
+          <img src="screenshots/automations.png" alt="Automations Hub - 9 n8n workflow pipelines" loading="lazy">
+          <div class="screenshot-label">Automations</div>
+        </div>
+        <div class="screenshot-placeholder animate-in animate-delay-4">
+          <img src="screenshots/trading.png" alt="Paper Trading Dashboard - Live prices, agent workflow pipeline" loading="lazy">
+          <div class="screenshot-label">Paper Trading</div>
+        </div>
+      </div>
+
+      <!-- Full-width Network Graph -->
+      <div style="margin-top: 32px;" class="animate-in animate-delay-2">
+        <div class="screenshot-placeholder" style="aspect-ratio: 16/9; max-width: 100%;">
+          <img src="screenshots/network_graph.png" alt="ElektraOS System Graph - 108 nodes, 438 edges" loading="lazy">
+          <div class="screenshot-label">System Architecture Graph - 108 Nodes, 438 Edges</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== 9 OPERATIONAL DOMAINS ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header center animate-in">
+        <div class="section-label">Operational Scope</div>
+        <h2 class="section-title">9 Integrated Business Domains</h2>
+        <p class="section-desc">Each domain is fully operational with its own routes, database models, agent coverage, and UI integration inside the operator console.</p>
+      </div>
+
+      <div class="domains-grid">
+        <div class="domain-card animate-in animate-delay-1">
+          <div class="domain-icon">&#9881;</div>
+          <div class="domain-title">Content Factory</div>
+          <div class="domain-desc">Multi-platform publishing across 11 channels. 3 active brands. Batch operations for scout, draft, publish, and full content autopilot.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-2">
+          <div class="domain-icon">&#9733;</div>
+          <div class="domain-title">Revenue / Pipeline</div>
+          <div class="domain-desc">610+ tracked opportunities with fit scoring and outreach automation. Full pipeline visibility from discovery to close.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-3">
+          <div class="domain-icon">&#9993;</div>
+          <div class="domain-title">Outreach</div>
+          <div class="domain-desc">Automated portfolio generation, email sequences, and CRM sync. Personalized outreach driven by pipeline intelligence.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-4">
+          <div class="domain-icon">&#8982;</div>
+          <div class="domain-title">Trading</div>
+          <div class="domain-desc">3-agent system: Analyst, Executor, and Sentinel. Risk management with signal approval workflow and emergency halt capabilities.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-5">
+          <div class="domain-icon">&#9788;</div>
+          <div class="domain-title">Intel</div>
+          <div class="domain-desc">AI-powered news scanning, market research, and intelligence briefings. Automated collection and synthesis of relevant signals.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-6">
+          <div class="domain-icon">&#9776;</div>
+          <div class="domain-title">Operations</div>
+          <div class="domain-desc">200+ task management with scheduling, priority routing, and calendar integration. Central operational command for daily execution.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-1">
+          <div class="domain-icon">&#9650;</div>
+          <div class="domain-title">Marketing</div>
+          <div class="domain-desc">SEO optimization, WordPress integration, and blog pipeline. End-to-end content marketing from keyword research to publication.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-2">
+          <div class="domain-icon">&#9874;</div>
+          <div class="domain-title">WordPress / SEO</div>
+          <div class="domain-desc">Blog optimizer with performance auditing and content quality gates. Automated meta descriptions, keyword targeting, and publishing.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-3">
+          <div class="domain-icon">&#9878;</div>
+          <div class="domain-title">Governance</div>
+          <div class="domain-desc">3-tier governance layer with Model Council for multi-model deliberation and Risk Sentinel for system-wide safety enforcement.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== KEY STATS BANNER ========== -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item animate-in animate-delay-1">
+          <div class="stat-value purple">55K+</div>
+          <div class="stat-label">Lines of Code</div>
+        </div>
+        <div class="stat-item animate-in animate-delay-2">
+          <div class="stat-value green">400+</div>
+          <div class="stat-label">API Endpoints</div>
+        </div>
+        <div class="stat-item animate-in animate-delay-3">
+          <div class="stat-value blue">38</div>
+          <div class="stat-label">Autonomous Agents</div>
+        </div>
+        <div class="stat-item animate-in animate-delay-4">
+          <div class="stat-value pink">9</div>
+          <div class="stat-label">Workflow Pipelines</div>
+        </div>
+      </div>
+      <div style="margin-top: 32px;">
+        <div class="stats-grid">
+          <div class="stat-item animate-in animate-delay-1">
+            <div class="stat-value purple">226</div>
+            <div class="stat-label">Content Entries</div>
+          </div>
+          <div class="stat-item animate-in animate-delay-2">
+            <div class="stat-value green">610+</div>
+            <div class="stat-label">Opportunities Tracked</div>
+          </div>
+          <div class="stat-item animate-in animate-delay-3">
+            <div class="stat-value blue">3</div>
+            <div class="stat-label">Active Brands</div>
+          </div>
+          <div class="stat-item animate-in animate-delay-4">
+            <div class="stat-value pink">$33.70</div>
+            <div class="stat-label">Monthly LLM Costs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== AGENT SYSTEM ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">Elektra + 38 Sub-Agents</div>
+        <h2 class="section-title">Elektra: A Structured AI Agent</h2>
+        <p class="section-desc">Elektra is not a chatbot. It is a structured AI agent with awareness, memory, behavioral flags, and proactive capabilities. It delegates tasks to 38 specialized sub-agents across 3 execution backends and 6 LLM providers.</p>
+      </div>
+
+      <div class="agent-layout">
+        <div>
+          <div class="agent-stats-block">
+            <div class="agent-stat animate-in animate-delay-1">
+              <div class="agent-stat-num">38</div>
+              <div class="agent-stat-label">Active Agents</div>
+            </div>
+            <div class="agent-stat animate-in animate-delay-2">
+              <div class="agent-stat-num">3</div>
+              <div class="agent-stat-label">Backends</div>
+            </div>
+            <div class="agent-stat animate-in animate-delay-3">
+              <div class="agent-stat-num">9</div>
+              <div class="agent-stat-label">Pipelines</div>
+            </div>
+            <div class="agent-stat animate-in animate-delay-4">
+              <div class="agent-stat-num">24/7</div>
+              <div class="agent-stat-label">Scheduling</div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary);">Workflow Pipelines</h3>
+          <ul class="pipeline-list">
+            <li class="pipeline-item"><span class="pipeline-name">Content</span> &#183; Scout, draft, review, publish</li>
+            <li class="pipeline-item"><span class="pipeline-name">Outreach</span> &#183; Portfolio, sequences, CRM</li>
+            <li class="pipeline-item"><span class="pipeline-name">Intel</span> &#183; Scan, analyze, brief</li>
+            <li class="pipeline-item"><span class="pipeline-name">Trading</span> &#183; Analyze, execute, sentinel</li>
+            <li class="pipeline-item"><span class="pipeline-name">Client Onboard</span> &#183; Intake, setup, delivery</li>
+            <li class="pipeline-item"><span class="pipeline-name">Full Revenue</span> &#183; End-to-end pipeline</li>
+            <li class="pipeline-item"><span class="pipeline-name">Job</span> &#183; Search, match, apply</li>
+            <li class="pipeline-item"><span class="pipeline-name">Smart Apply</span> &#183; Targeted applications</li>
+            <li class="pipeline-item"><span class="pipeline-name">WordPress</span> &#183; Optimize, audit, publish</li>
+          </ul>
+        </div>
+
+        <div class="agent-visual animate-in animate-delay-2">
+          <div class="agent-visual-title">Elektra Agent Architecture</div>
+          <div class="agent-flow">
+            <div class="agent-flow-row">
+              <div class="agent-flow-node scheduler" style="background: rgba(43,255,136,0.15); border-color: rgba(43,255,136,0.4); font-weight: 700;">Elektra (Core Agent)</div>
+              <div class="agent-flow-arrow">&#8594;</div>
+              <div class="agent-flow-node scheduler">Coordinator + Router</div>
+            </div>
+            <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">&#8595;</div>
+            <div class="agent-flow-row">
+              <div class="agent-flow-node backend">Claude Code</div>
+              <div class="agent-flow-node backend">LLM</div>
+              <div class="agent-flow-node backend">OpenClaw</div>
+            </div>
+            <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">&#8595;</div>
+            <div class="agent-flow-row">
+              <div class="agent-flow-node pipeline">Pipeline Orchestrator</div>
+            </div>
+            <div style="text-align: center; color: var(--text-muted); font-size: 1.2rem;">&#8595;</div>
+            <div class="agent-flow-row">
+              <div class="agent-flow-node pipeline" style="background: rgba(43, 255, 136, 0.06); border-color: rgba(43, 255, 136, 0.2); color: var(--success);">Execution + Audit Trail</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <div class="agent-visual-title">Agent Backends</div>
+            <div style="display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;">
+              <span style="padding: 8px 16px; background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 8px; font-size: 0.82rem; color: var(--accent);">Claude Code</span>
+              <span style="padding: 8px 16px; background: rgba(43, 255, 136, 0.06); border: 1px solid rgba(43, 255, 136, 0.2); border-radius: 8px; font-size: 0.82rem; color: var(--success);">LLM Chat</span>
+              <span style="padding: 8px 16px; background: rgba(56, 139, 253, 0.08); border: 1px solid rgba(56, 139, 253, 0.25); border-radius: 8px; font-size: 0.82rem; color: #58a6ff;">OpenClaw</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== GOVERNANCE ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header center animate-in">
+        <div class="section-label">Safety + Oversight</div>
+        <h2 class="section-title">3-Tier Governance Framework</h2>
+        <p class="section-desc">Every autonomous action is bounded by governance rules, cost tracking, and quality gates. The system is designed to be safe by default.</p>
+      </div>
+
+      <div class="gov-tiers">
+        <div class="gov-tier operational animate-in animate-delay-1">
+          <div class="gov-tier-label">Tier 1</div>
+          <div class="gov-tier-title">Operational</div>
+          <ul class="gov-tier-items">
+            <li>Rate limiting across all endpoints</li>
+            <li>Per-call LLM cost tracking</li>
+            <li>Execution audit trails</li>
+            <li>Agent scheduling controls</li>
+          </ul>
+        </div>
+        <div class="gov-tier strategic animate-in animate-delay-2">
+          <div class="gov-tier-label">Tier 2</div>
+          <div class="gov-tier-title">Strategic</div>
+          <ul class="gov-tier-items">
+            <li>Model Council deliberation</li>
+            <li>Multi-model consensus voting</li>
+            <li>Quality gates (8+ score required)</li>
+            <li>Pipeline approval workflows</li>
+          </ul>
+        </div>
+        <div class="gov-tier compliance animate-in animate-delay-3">
+          <div class="gov-tier-label">Tier 3</div>
+          <div class="gov-tier-title">Compliance</div>
+          <ul class="gov-tier-items">
+            <li>Risk Sentinel monitoring</li>
+            <li>Emergency halt on drawdown breach</li>
+            <li>Full tracing and flag system</li>
+            <li>System-wide safety enforcement</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gov-features">
+        <div class="gov-feature animate-in animate-delay-1">
+          <div class="gov-feature-icon">&#9878;</div>
+          <div class="gov-feature-text">
+            <h4>Model Council</h4>
+            <p>Multi-model deliberation for high-stakes decisions, combining outputs from multiple LLM providers.</p>
+          </div>
+        </div>
+        <div class="gov-feature animate-in animate-delay-2">
+          <div class="gov-feature-icon">&#9888;</div>
+          <div class="gov-feature-text">
+            <h4>Risk Sentinel</h4>
+            <p>Continuous risk monitoring with emergency halt capability when drawdown thresholds are breached.</p>
+          </div>
+        </div>
+        <div class="gov-feature animate-in animate-delay-3">
+          <div class="gov-feature-icon">&#9745;</div>
+          <div class="gov-feature-text">
+            <h4>Quality Gates</h4>
+            <p>All published content requires an 8+ quality score. No automated publishing without passing the gate.</p>
+          </div>
+        </div>
+        <div class="gov-feature animate-in animate-delay-4">
+          <div class="gov-feature-icon">&#9783;</div>
+          <div class="gov-feature-text">
+            <h4>Audit Trails</h4>
+            <p>Full execution history with per-call LLM cost tracking. Every agent run is logged and traceable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== CONTENT FACTORY ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header animate-in">
+        <div class="section-label">Content Engine</div>
+        <h2 class="section-title">Content Factory</h2>
+        <p class="section-desc">End-to-end content lifecycle management across 11 platforms and 3 active brands. From topic scouting to batch publishing, every stage is automated.</p>
+      </div>
+
+      <div class="cf-layout">
+        <div>
+          <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">Kanban Pipeline</h3>
+          <div class="cf-kanban">
+            <div class="cf-kanban-col animate-in animate-delay-1">
+              <div class="cf-kanban-label">Planned</div>
+              <div class="cf-kanban-count">14</div>
+            </div>
+            <div class="cf-kanban-col animate-in animate-delay-2">
+              <div class="cf-kanban-label">Drafting</div>
+              <div class="cf-kanban-count">6</div>
+            </div>
+            <div class="cf-kanban-col animate-in animate-delay-3">
+              <div class="cf-kanban-label">Ready</div>
+              <div class="cf-kanban-count">8</div>
+            </div>
+            <div class="cf-kanban-col animate-in animate-delay-4">
+              <div class="cf-kanban-label">Published</div>
+              <div class="cf-kanban-count">198</div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; margin-top: 28px;">Batch Operations</h3>
+          <ul class="cf-ops">
+            <li class="cf-op"><span class="cf-op-dot"></span>Scout Topics</li>
+            <li class="cf-op"><span class="cf-op-dot"></span>Batch Draft</li>
+            <li class="cf-op"><span class="cf-op-dot"></span>Batch Publish</li>
+            <li class="cf-op"><span class="cf-op-dot"></span>Content Autopilot</li>
+          </ul>
+
+          <div style="margin-top: 20px;">
+            <div class="cf-op" style="display: inline-flex; border-color: rgba(139, 92, 246, 0.3);">
+              <span class="cf-op-dot" style="background: var(--success);"></span>
+              n8n Workflow Integration
+            </div>
+          </div>
+        </div>
+
+        <div class="cf-platforms animate-in animate-delay-2">
+          <div class="cf-platforms-title">11 Publishing Platforms</div>
+          <div class="cf-platform-tags">
+            <span class="cf-tag">WordPress</span>
+            <span class="cf-tag">LinkedIn</span>
+            <span class="cf-tag">Twitter/X</span>
+            <span class="cf-tag">Instagram</span>
+            <span class="cf-tag">Facebook</span>
+            <span class="cf-tag">TikTok</span>
+            <span class="cf-tag">YouTube</span>
+            <span class="cf-tag">Medium</span>
+            <span class="cf-tag">Substack</span>
+            <span class="cf-tag">Pinterest</span>
+            <span class="cf-tag">Newsletter</span>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <div class="cf-platforms-title">3 Active Brands</div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;">
+              <div style="flex: 1; min-width: 100px; padding: 16px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; text-align: center;">
+                <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">Brand 1</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Active</div>
+              </div>
+              <div style="flex: 1; min-width: 100px; padding: 16px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; text-align: center;">
+                <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">Brand 2</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Active</div>
+              </div>
+              <div style="flex: 1; min-width: 100px; padding: 16px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 10px; text-align: center;">
+                <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">Brand 3</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Active</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);">
+            <div class="cf-platforms-title">Total Content Entries</div>
+            <div style="font-size: 2.2rem; font-weight: 800; color: var(--accent); margin-top: 8px;">226</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Across all platforms and brands</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== TECH STACK + COST ========== -->
+  <section>
+    <div class="container">
+      <div class="section-header center animate-in">
+        <div class="section-label">Infrastructure</div>
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="section-desc">Purpose-selected tools, each earning its place through proven utility in a production system running real business operations.</p>
+      </div>
+
+      <div class="tech-stack-row">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">SQLite</span>
+        <span class="tech-pill">Groq</span>
+        <span class="tech-pill">OpenAI</span>
+        <span class="tech-pill">Anthropic</span>
+        <span class="tech-pill">n8n</span>
+        <span class="tech-pill">WordPress API</span>
+      </div>
+
+      <div class="cost-callout animate-in animate-delay-2">
+        <div class="cost-amount">$33.70</div>
+        <div class="cost-label">Monthly LLM costs</div>
+        <div class="cost-note">Running 38 agents, 9 pipelines, and 400+ endpoints</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">Built by <strong>Yossra Benzad</strong> | 2025</p>
+    </div>
+  </footer>
+
+</body>
+</html>
