@@ -926,6 +926,27 @@
     margin-top: 8px;
   }
 
+  /* ===== UPDATED BADGE ===== */
+  .badge-updated {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--success);
+    background: rgba(43, 255, 136, 0.08);
+    border: 1px solid rgba(43, 255, 136, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+    animation: badge-pulse 3s ease-in-out infinite;
+  }
+  @keyframes badge-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
   /* ===== FOOTER ===== */
   .footer {
     padding: 48px 0;
@@ -1129,6 +1150,7 @@
       <p class="hero-tagline">AI-powered business operating system</p>
       <p class="hero-desc">184,000+ lines of code &middot; 624 endpoints &middot; 41 agents &middot; 13 domains</p>
       <div class="hero-build-line">Built solo. No formal CS background. Accepted: Founder Institute Nordics &middot; Antler Nordics.</div>
+      <div style="margin-top: 12px; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em;">Last audited &amp; verified: March 20, 2026 &middot; All numbers from live codebase</div>
     </div>
     <div class="hero-scroll-hint">Scroll</div>
   </section>
@@ -1140,7 +1162,7 @@
     <div class="container">
       <div class="section-header center animate-in">
         <div class="section-label">System Architecture</div>
-        <h2 class="section-title">Full-Stack AI Operating System</h2>
+        <h2 class="section-title">Full-Stack AI Operating System <span class="badge-updated">Verified Mar 2026</span></h2>
         <p class="section-desc">A complete business automation platform built from the ground up as a solo project by a marketing and e-commerce professional with no formal CS background.</p>
       </div>
 
@@ -1323,7 +1345,7 @@
     <div class="container">
       <div class="section-header animate-in">
         <div class="section-label">Elektra + 40 Sub-Agents</div>
-        <h2 class="section-title">Elektra: A Structured AI Agent</h2>
+        <h2 class="section-title">Elektra: A Structured AI Agent <span class="badge-updated">Upgraded</span></h2>
         <p class="section-desc">Elektra is not a chatbot. It is a structured AI agent with awareness, memory, behavioral flags, and proactive capabilities. It delegates tasks to 41 specialized sub-agents across 3 execution backends and 6 LLM providers.</p>
       </div>
 
@@ -1576,7 +1598,7 @@
     <div class="container">
       <div class="section-header center animate-in">
         <div class="section-label">Infrastructure</div>
-        <h2 class="section-title">Tech Stack</h2>
+        <h2 class="section-title">Tech Stack <span class="badge-updated">New Integrations</span></h2>
         <p class="section-desc">Purpose-selected tools, each earning its place through proven utility in a production system running real business operations.</p>
       </div>
 
@@ -1609,7 +1631,7 @@
     <div class="container">
       <div class="section-header center animate-in">
         <div class="section-label">Next Phase</div>
-        <h2 class="section-title">Upgrade Roadmap</h2>
+        <h2 class="section-title">Upgrade Roadmap <span class="badge-updated">Active</span></h2>
         <p class="section-desc">Identified gaps and the open-source solutions queued to close them — all free, all self-hostable, all compatible with the existing stack.</p>
       </div>
 
