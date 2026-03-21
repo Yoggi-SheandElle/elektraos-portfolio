@@ -1148,9 +1148,9 @@
       <h1 class="hero-title">ElektraOS</h1>
       <p class="hero-subtitle">Operator Console</p>
       <p class="hero-tagline">AI-powered business operating system</p>
-      <p class="hero-desc">184,000+ lines of code &middot; 624 endpoints &middot; 41 agents &middot; 13 domains</p>
+      <p class="hero-desc">184,000+ lines of code &middot; 624 endpoints &middot; 41 agents &middot; 10 domains &middot; 2,000+ vault notes</p>
       <div class="hero-build-line">Built solo. No formal CS background. Accepted: Founder Institute Nordics &middot; Antler Nordics.</div>
-      <div style="margin-top: 12px; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em;">Last audited &amp; verified: March 20, 2026 &middot; All numbers from live codebase</div>
+      <div style="margin-top: 12px; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em;">Last audited &amp; verified: March 21, 2026 &middot; All numbers from live codebase</div>
     </div>
     <div class="hero-scroll-hint">Scroll</div>
   </section>
@@ -1238,7 +1238,7 @@
     <div class="container">
       <div class="section-header center animate-in">
         <div class="section-label">Operational Scope</div>
-        <h2 class="section-title">9 Integrated Business Domains</h2>
+        <h2 class="section-title">10 Integrated Business Domains</h2>
         <p class="section-desc">Each domain is fully operational with its own routes, database models, agent coverage, and UI integration inside the operator console.</p>
       </div>
 
@@ -1287,6 +1287,11 @@
           <div class="domain-icon">&#9878;</div>
           <div class="domain-title">Governance</div>
           <div class="domain-desc">3-tier governance layer with Model Council for multi-model deliberation and Risk Sentinel for system-wide safety enforcement.</div>
+        </div>
+        <div class="domain-card animate-in animate-delay-4">
+          <div class="domain-icon">&#9741;</div>
+          <div class="domain-title">Vault / Neurolink</div>
+          <div class="domain-desc">2,000+ note knowledge base with 3D graph visualization, D3.js mind map, virtual-scrolled navigation, semantic RAG search, and wikilink-based backlink indexing.</div>
         </div>
       </div>
     </div>
@@ -1614,6 +1619,12 @@
         <span class="tech-pill">HuggingFace</span>
         <span class="tech-pill">n8n</span>
         <span class="tech-pill">WordPress API</span>
+        <span class="tech-pill">D3.js</span>
+        <span class="tech-pill">Three.js</span>
+        <span class="tech-pill">Edge-TTS</span>
+        <span class="tech-pill">ChromaDB</span>
+        <span class="tech-pill">DSPy</span>
+        <span class="tech-pill">MCP</span>
       </div>
 
       <div class="cost-callout animate-in animate-delay-2">
@@ -1644,15 +1655,21 @@
         </div>
 
         <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--success);">
-          <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--success); font-weight: 600; margin-bottom: 10px;">Agent Memory</div>
+          <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--success); font-weight: 600; margin-bottom: 10px;">Agent Memory <span style="background:var(--success-dim);color:var(--success);padding:2px 8px;border-radius:4px;font-size:0.65rem;margin-left:6px;">SHIPPED</span></div>
           <div style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">mem0 + ChromaDB</div>
-          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">Cross-session persistent memory for Elektra in ~10 lines. ChromaDB adds RAG to vault lookups — fixes content-publisher hallucination by grounding retrieval in accurate context.</p>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">Cross-session persistent memory with ChromaDB vector search. Vault RAG grounds retrieval in 2,000+ notes. Semantic search replaces keyword matching.</p>
         </div>
 
-        <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--accent);">
-          <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; margin-bottom: 10px;">MCP Integration</div>
+        <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--success);">
+          <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--success); font-weight: 600; margin-bottom: 10px;">MCP Integration <span style="background:var(--success-dim);color:var(--success);padding:2px 8px;border-radius:4px;font-size:0.65rem;margin-left:6px;">SHIPPED</span></div>
           <div style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">FastMCP Server</div>
-          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">Expose ElektraOS's 41 agents as MCP tools in ~50 lines of Python. Makes the entire system callable from Claude Code, Claude Desktop, Cursor, and any MCP-compatible client.</p>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">All 41 agents exposed as MCP tools. System callable from Claude Code, Claude Desktop, Cursor, and any MCP-compatible client.</p>
+        </div>
+
+        <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--success);">
+          <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--success); font-weight: 600; margin-bottom: 10px;">Knowledge Graph <span style="background:var(--success-dim);color:var(--success);padding:2px 8px;border-radius:4px;font-size:0.65rem;margin-left:6px;">SHIPPED</span></div>
+          <div style="font-size: 1.05rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">D3.js Mind Map + Three.js 3D Graph</div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">Radial dendrogram mind map and 3D force-directed graph for 2,000+ vault notes. Virtual scrolling renders only visible items for 10x faster navigation.</p>
         </div>
 
         <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--accent);">
